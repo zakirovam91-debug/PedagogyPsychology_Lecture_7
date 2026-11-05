@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Характер и способности — лекция и задания</title>
+<style>
+:root{
+  --bg:#B9C6ED; --rim:#EEF2FD; --paper:#FCFDFF; --card:#E8EDFB; --line:#CBD5F1;
+  --ink:#1E2F66; --ink2:#46568A; --blue:#3F58A6; --blue2:#6F86C9; --lav:#8FA3DA;
+  --orange:#E58A2E; --green:#4E9A7B; --red:#C8554F;
+  --serif:Cambria,"Noto Serif","DejaVu Serif",Georgia,serif;
+  --sans:"Segoe UI",Calibri,"Noto Sans","DejaVu Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{font-size:18px}
+body{margin:0;font-family:var(--sans);color:var(--ink);line-height:1.45;background-color:var(--bg);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.012 .035' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .62  0 0 0 0 .86  0 0 0 .5 0'/></filter><rect width='260' height='260' filter='url(%23n)'/></svg>")}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.rim{height:100vh;height:100dvh;padding:clamp(14px,2.2vw,30px);display:flex}
+.sheet{flex:1;display:flex;flex-direction:column;position:relative;background:var(--paper);border:3px solid var(--blue);
+  border-radius:1.6rem;box-shadow:0 0 0 .55rem var(--rim),0 1rem 2.4rem rgba(30,47,102,.22);overflow:hidden;min-width:0}
+
+/* верхняя панель */
+.top{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;padding:.7rem 1.2rem .5rem}
+.brand{font-family:var(--serif);font-weight:700;font-size:.82rem;color:var(--ink2);margin-right:auto}
+.tabs{display:flex;gap:.35rem;background:var(--card);padding:.25rem;border-radius:2rem}
+.tab{border:0;background:transparent;padding:.35rem 1.1rem;border-radius:2rem;font-weight:600;font-size:.85rem;color:var(--ink2)}
+.tab[aria-selected=true]{background:var(--blue);color:#fff}
+.tools{display:flex;gap:.3rem;align-items:center;margin-left:auto}
+.tb{border:1px solid var(--line);background:#fff;border-radius:.6rem;padding:.25rem .6rem;font-size:.78rem;color:var(--ink2);min-width:2rem}
+.tb:hover{background:var(--card)}
+.pop{position:relative}
+.pop summary{list-style:none}.pop summary::-webkit-details-marker{display:none}
+.pop .panel{position:absolute;right:0;top:2.2rem;z-index:30;background:#fff;border:1px solid var(--line);border-radius:.9rem;padding:.7rem;display:flex;gap:.35rem;box-shadow:0 .6rem 1.4rem rgba(30,47,102,.18)}
+#tmChip{position:fixed;right:clamp(24px,3vw,44px);top:clamp(24px,3vw,44px);z-index:40;background:var(--ink);color:#fff;font-family:var(--serif);font-weight:700;font-size:1.5rem;padding:.35rem 1rem;border-radius:2rem;border:0;display:none}
+#tmChip.low{background:var(--red)}
+#tmChip.paused{opacity:.75}
+
+/* сцена */
+.stage{flex:1;min-height:0;overflow:auto;padding:0 clamp(1rem,4vw,3.4rem) 1rem;display:flex;flex-direction:column}
+.slide{font-size:1.1rem;display:none;flex:1;flex-direction:column}
+.slide.on{display:flex;animation:in .28s ease-out}
+@keyframes in{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.slide.on{animation:none}}
+h2.t{font-family:var(--serif);text-align:center;font-size:2.05rem;line-height:1.15;margin:.4rem 0 0;padding-bottom:.55rem;border-bottom:2px dashed var(--line)}
+.sb{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.8rem;padding-top:.6rem}
+.g2,.g3,.g4{display:grid;gap:.9rem}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:1.1rem;padding:.9rem 1.15rem}
+.card h3{font-family:var(--serif);font-size:1.18rem;margin:0 0 .35rem}
+.card p{margin:.2rem 0}
+.card.dark{background:var(--blue);border-color:var(--blue);color:#fff}
+.card.dark h3{color:#fff}
+.card.plain{background:#fff}
+.lead{font-size:1.25rem}
+.big{font-family:var(--serif);font-size:1.45rem;line-height:1.35;font-weight:700}
+.muted{color:var(--ink2)}
+.call{display:flex;gap:.8rem;align-items:center;border-radius:1rem;padding:.8rem 1.1rem;border:1.5px solid;font-size:1.05rem}
+.call b{white-space:nowrap}
+.call.blue{background:#EAEEFB;border-color:var(--blue2)}
+.call.amber{background:#FDF1E3;border-color:var(--orange)}
+.call.green{background:#E6F3EE;border-color:var(--green)}
+.call.red{background:#FAE9E8;border-color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.chip{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:2rem;padding:.2rem .8rem;font-size:.92rem}
+.chip.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip.pos{border-color:var(--green)}.chip.neg{border-color:var(--red)}
+button.chip{cursor:pointer}
+button.chip:hover{background:var(--card)}
+.flow{display:flex;align-items:stretch;gap:.5rem}
+.flow .card{flex:1}
+.flow .ar{align-self:center;font-size:1.6rem;color:var(--blue2)}
+table.tb2{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:1rem;overflow:hidden;font-size:1.02rem}
+.tb2 th{background:var(--blue);color:#fff;text-align:left;padding:.55rem .8rem;font-weight:600}
+.tb2 td{padding:.65rem .8rem;border-top:1px solid var(--line);background:#fff;vertical-align:top}
+.tb2 td:first-child{font-weight:700;background:var(--card);width:22%}
+.bars{display:flex;align-items:flex-end;gap:.9rem;height:15rem}
+.bars .bar{flex:1;border-radius:1rem;padding:.8rem 1rem;color:#fff}
+.bars h3{font-family:var(--serif);margin:0 0 .3rem;font-size:1.25rem;color:#fff}
+.sphere{text-align:left;border:1px solid var(--line);background:var(--card);border-radius:1.1rem;padding:.9rem 1.1rem;display:block;width:100%}
+.sphere h3{font-family:var(--serif);font-size:1.15rem;margin:0 0 .3rem}
+.sphere .more{display:none;margin-top:.5rem}
+.sphere.open{background:#fff;border-color:var(--blue2)}
+.sphere.open .more{display:block}
+.sphere .hint{font-size:.95rem;color:var(--ink2)}
+.sphere.open .hint{display:none}
+.flip{display:flex;justify-content:space-between;gap:.6rem;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:.9rem;padding:.55rem .9rem}
+.flip .b{color:var(--red);display:none;font-weight:600}
+.flip.on .a{display:none}.flip.on .b{display:inline}
+.quad{width:100%;max-width:15rem;height:auto;display:block;margin:0 auto}
+.step{display:flex;gap:.8rem;align-items:flex-start}
+.num{flex:none;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.95rem}
+.btn{border:0;background:var(--blue);color:#fff;border-radius:2rem;padding:.65rem 1.6rem;font-weight:700;font-size:1rem}
+.btn:hover{background:var(--ink)}
+.btn.alt{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn.alt:hover{background:var(--card)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.org{background:var(--orange)}
+.btn.org:hover{background:#c97420}
+
+/* нижняя навигация лекции */
+.nav{display:flex;align-items:center;gap:.8rem;padding:.55rem 1.2rem .8rem}
+.nav .bar{flex:1;height:.4rem;background:var(--card);border-radius:1rem;overflow:hidden}
+.nav .bar i{display:block;height:100%;width:0;background:var(--blue);transition:width .25s}
+.round{width:2.5rem;height:2.5rem;border-radius:50%;border:2px solid var(--blue);background:#fff;color:var(--blue);font-weight:700;font-size:1.1rem}
+.round:hover{background:var(--blue);color:#fff}
+.round[disabled]{opacity:.35;cursor:default;background:#fff;color:var(--blue)}
+.count{font-size:.85rem;color:var(--ink2);min-width:3.4rem;text-align:center}
+.notes{display:none;background:var(--ink);color:#fff;padding:.8rem 1.4rem;font-size:.95rem;border-top:3px solid var(--orange)}
+.notes.on{display:block}
+.notes b{color:#FFD9A8}
+
+/* задания */
+.tasks{display:none;flex:1;flex-direction:column;min-height:0}
+.tasks.on{display:flex}
+.steps{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;padding:.2rem 1rem .6rem}
+.st{border:1px solid var(--line);background:#fff;border-radius:2rem;padding:.3rem .95rem;font-size:.85rem;color:var(--ink2);display:flex;gap:.4rem;align-items:center}
+.st[aria-current=step]{background:var(--blue);border-color:var(--blue);color:#fff}
+.st.done::after{content:"✓";color:var(--green);font-weight:700}
+.st[aria-current=step].done::after{color:#fff}
+.pane{display:none;max-width:52rem;width:100%;margin:0 auto}
+.pane.on{display:block}
+.pane h2{font-family:var(--serif);font-size:1.7rem;margin:.2rem 0 .3rem;text-align:center}
+.pane .sub{text-align:center;color:var(--ink2);margin:0 0 1rem}
+label.f{display:block;font-weight:600;margin:.9rem 0 .25rem}
+.in,.ta,select.in{width:100%;border:1.5px solid var(--line);border-radius:.8rem;background:#fff;padding:.6rem .85rem;font-size:1rem}
+.ta{min-height:7.5rem;resize:vertical;line-height:1.5}
+.in:focus,.ta:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(63,88,166,.2)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.hint{font-size:.85rem;color:var(--ink2)}
+.cnt{font-size:.8rem;color:var(--ink2);text-align:right}
+.cnt.ok{color:var(--green);font-weight:600}
+.err{color:var(--red);font-weight:600;margin:.5rem 0 0;min-height:1.2em}
+.acts{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin:1.1rem 0 .3rem}
+.qhead{display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem}
+.qprog{flex:1;height:.45rem;background:var(--card);border-radius:1rem;overflow:hidden}
+.qprog i{display:block;height:100%;background:var(--blue);width:0;transition:width .2s}
+.qtext{font-family:var(--serif);font-size:1.3rem;font-weight:700;line-height:1.3;margin:.3rem 0 .8rem}
+.opt{display:flex;gap:.7rem;align-items:flex-start;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:.9rem;padding:.65rem .9rem;margin:.45rem 0}
+.opt:hover:not([disabled]){border-color:var(--blue2);background:var(--card)}
+.opt .k{flex:none;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--card);display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.opt.ok{border-color:var(--green);background:#E6F3EE}.opt.ok .k{background:var(--green);color:#fff}
+.opt.bad{border-color:var(--red);background:#FAE9E8}.opt.bad .k{background:var(--red);color:#fff}
+.opt[disabled]{cursor:default}
+.expl{margin-top:.8rem}
+.score{display:flex;gap:1.3rem;align-items:center;justify-content:center;flex-wrap:wrap;margin:.3rem 0 1rem}
+.ring{--p:0;width:8rem;height:8rem;border-radius:50%;background:conic-gradient(var(--green) calc(var(--p)*1%),var(--card) 0);display:grid;place-items:center}
+.ring span{width:6.2rem;height:6.2rem;border-radius:50%;background:var(--paper);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:1.7rem}
+.rev{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem 0;border-top:1px solid var(--line)}
+.rev i{font-style:normal;flex:none;width:1.4rem;font-weight:700}
+.sph{margin:.9rem 0;padding:.9rem 1rem 1rem;border:1px solid var(--line);border-radius:1.1rem;background:var(--card)}
+.sph h3{font-family:var(--serif);margin:0 0 .2rem;font-size:1.15rem}
+.sph .chips{margin:.45rem 0}
+.sph .ta{min-height:6rem}
+.status{display:inline-flex;gap:.4rem;align-items:center;font-size:.88rem;font-weight:600;border-radius:2rem;padding:.2rem .8rem;background:var(--card);color:var(--ink2)}
+.status.ok{background:#E6F3EE;color:#2F7258}
+.status.wait{background:#FDF1E3;color:#9A5A12}
+.status.bad{background:#FAE9E8;color:#9E3A34}
+details.ex{border:1px dashed var(--blue2);border-radius:1rem;padding:.6rem 1rem;background:#fff;margin:.8rem 0}
+details.ex summary{cursor:pointer;font-weight:700;color:var(--blue)}
+.res{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.resbox{flex:1;min-width:14rem}
+.big2{font-family:var(--serif);font-weight:700;font-size:1.5rem}
+
+/* панель преподавателя */
+.teacher{display:none;position:fixed;left:clamp(24px,3vw,44px);bottom:clamp(24px,3vw,44px);z-index:45;width:min(23rem,calc(100vw - 48px));background:#fff;border:2px solid var(--blue);border-radius:1.1rem;padding:.9rem 1.1rem;box-shadow:0 1rem 2.2rem rgba(30,47,102,.3);font-size:.9rem}
+.teacher.on{display:block}
+.teacher h4{font-family:var(--serif);margin:0 0 .4rem;font-size:1.05rem}
+.teacher .r{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:.25rem 0}
+
+@media (max-width:860px){
+  .g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow{flex-direction:column}.flow .ar{transform:rotate(90deg)}
+  .bars{height:auto;flex-direction:column;align-items:stretch}
+  h2.t{font-size:1.6rem}
+}
+@media (max-width:560px){
+  .g2,.g3,.g4,.row2{grid-template-columns:1fr}
+  .top{padding:.6rem .8rem .4rem}
+  .tabs{order:3;width:100%;justify-content:center}.tools{margin-left:0}
+  .call{flex-direction:column;align-items:flex-start}
+}
+@media print{.top,.nav,.notes,.tools{display:none}}
+</style>
+</head>
+<body>
+<div class="rim">
+<main class="sheet" id="sheet">
+  <header class="top">
+    <div class="brand">Тема 7 · Характер и способности</div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tabL" aria-selected="true">Лекция</button>
+      <button class="tab" role="tab" id="tabT" aria-selected="false">Задания</button>
+    </div>
+    <div class="tools">
+      <button class="tb" id="fsDown" title="Уменьшить текст" aria-label="Уменьшить текст">А−</button>
+      <button class="tb" id="fsUp" title="Увеличить текст" aria-label="Увеличить текст">А+</button>
+      <details class="pop" id="tmPop"><summary class="tb" style="cursor:pointer">Таймер</summary>
+        <div class="panel"><button class="tb" data-m="5">5 мин</button><button class="tb" data-m="10">10 мин</button><button class="tb" data-m="15">15 мин</button><button class="tb" data-m="0">Стоп</button></div>
+      </details>
+      <button class="tb" id="btnNotes" title="Заметки лектора (N)">Заметки</button>
+      <button class="tb" id="btnFs" title="Во весь экран (F)">Экран</button>
+    </div>
+  </header>
+
+  <!-- ЛЕКЦИЯ -->
+  <section class="stage" id="lecture" aria-label="Лекция"></section>
+  <div class="notes" id="notes"></div>
+  <nav class="nav" id="nav" aria-label="Слайды">
+    <button class="round" id="prev" aria-label="Назад">‹</button>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="count" id="count"></div>
+    <button class="round" id="next" aria-label="Вперёд">›</button>
+  </nav>
+
+  <!-- ЗАДАНИЯ -->
+  <section class="tasks" id="tasks" aria-label="Задания">
+    <div class="steps" id="steps"></div>
+    <div class="stage" id="tstage">
+      <div class="pane" id="p0"></div>
+      <div class="pane" id="p1"></div>
+      <div class="pane" id="p2"></div>
+      <div class="pane" id="p3"></div>
+      <div class="pane" id="p4"></div>
+    </div>
+  </section>
+</main>
+</div>
+<button id="tmChip" title="Пауза / продолжить"></button>
+<aside class="teacher" id="teacher"><h4>Сводка по таблице</h4><div id="tbody">Загрузка…</div><div class="hint" style="margin-top:.4rem">Обновляется каждые 15 с. Скрыть: Shift+T</div></aside>
+
+<script>
+/* ============================ НАСТРОЙКИ ============================ */
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwOjeAJQxcA_BEPPz4-jQjnyg1SYvtEFfmJQtDTfKCt9SnY1m8A0sX2v7ncYWiVxAt/exec";
+var EYSENCK_URL = "https://psytests.org/eysenck/epiR.html";
+var STORE = "ch7_tool_v1";
+
+/* ============================ ВСПОМОГАТЕЛЬНОЕ ============================ */
+var $ = function(s, r){ return (r||document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
+
+var S = { fio:"", group:"", step:0, test:{opt:{},ans:{},i:0,done:false,score:0,t0:0,sec:0},
+          ch:{who:"Я сам(а)",name:"",work:"",self:"",circ:"",people:"",lead:"",ctx:""},
+          ey:{E:"",N:"",L:"",agree:"",props:[],arg:""}, sent:{} };
+function load(){ try{ var r=localStorage.getItem(STORE); if(r){ var o=JSON.parse(r); for(var k in o) S[k]=o[k]; } }catch(e){} }
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){} }
+
+/* ============================ ЛЕКЦИЯ: ДАННЫЕ ============================ */
+function quad(E,N){
+  var s=320,pad=36,w=s-pad*2,h=w/2;
+  var X=function(v){return pad+v/24*w;}, Y=function(v){return pad+(24-v)/24*w;};
+  var q=[["меланхолик",pad,pad,"#6F86C9"],["холерик",pad+h,pad,"#3F58A6"],["флегматик",pad,pad+h,"#4E9A7B"],["сангвиник",pad+h,pad+h,"#E58A2E"]];
+  var g='<svg viewBox="0 0 '+s+' '+s+'" class="quad" role="img" aria-label="Плоскость Айзенка: экстраверсия и нейротизм">';
+  q.forEach(function(a){ g+='<rect x="'+(a[1]+1)+'" y="'+(a[2]+1)+'" width="'+(h-2)+'" height="'+(h-2)+'" rx="10" fill="'+a[3]+'"/><text x="'+(a[1]+h/2)+'" y="'+(a[2]+h/2+5)+'" text-anchor="middle" fill="#fff" font-family="Cambria,Georgia,serif" font-weight="700" font-size="17">'+a[0]+'</text>'; });
+  g+='<g font-family="Segoe UI,Calibri,sans-serif" font-size="12" fill="#46568A" text-anchor="middle">'
+   +'<text x="'+s/2+'" y="22">нейротизм высокий</text><text x="'+s/2+'" y="'+(s-10)+'">нейротизм низкий</text>'
+   +'<text transform="translate(16 '+s/2+') rotate(-90)">интроверсия</text><text transform="translate('+(s-12)+' '+s/2+') rotate(90)">экстраверсия</text></g>';
+  if(E!==""&&N!==""&&!isNaN(E)&&!isNaN(N)){ g+='<circle cx="'+X(+E)+'" cy="'+Y(+N)+'" r="10" fill="#fff" stroke="#1E2F66" stroke-width="4"/>'; }
+  return g+'</svg>';
+}
+
+var SLIDES = [
+ { t:"Характер и способности", note:"<b>Вступление (1 мин).</b> Темперамент мы уже разобрали, сегодня две темы: характер и способности. После объяснения — три задания: тест на понятия, описание характера по четырём сферам и аргументация результата теста Айзенка. <b>Вопрос аудитории:</b> чем, по-вашему, характер отличается от темперамента?",
+   h:'<div class="sb" style="align-items:center;text-align:center"><p class="lead muted" style="max-width:34rem;margin:0">Индивидуально-психологические особенности личности</p>'
+   +'<div class="g4" style="width:100%;margin-top:.6rem">'
+   +'<div class="card plain"><h3>Темперамент</h3><p class="muted">коротко повторим</p></div>'
+   +'<div class="card dark"><h3>Характер</h3><p>отношения и поступки</p></div>'
+   +'<div class="card dark"><h3>Способности</h3><p>условия успешности</p></div>'
+   +'<div class="card plain"><h3>Задания</h3><p class="muted">тест, описание, Айзенк</p></div></div>'
+   +'<p class="muted" style="margin:.8rem 0 0">Закирова М. Р., доцент · ТУИТ имени ал-Хорезми</p></div>' },
+
+ { t:"Темперамент: коротко", note:"<b>Повторение (2 мин).</b> Темперамент — динамика поведения: темп, интенсивность, реактивность. Это не оценка и не диагноз. По Айзенку два измерения (экстраверсия и нейротизм) дают четыре квадранта. Эту схему студенты используют в третьем задании. <b>Вопрос:</b> почему нельзя сказать «флегматик — значит неспособный»?",
+   h:'<div class="sb"><div class="g2" style="align-items:center"><div class="card"><h3>Что запомнить</h3><div class="chips" style="margin-bottom:.6rem"><span class="chip">темп</span><span class="chip">интенсивность</span><span class="chip">реактивность</span><span class="chip">активность</span></div>'
+   +'<p>Темперамент описывает <b>динамику</b> поведения, а не его содержание и не способности.</p>'
+   +'<p>Нет «хороших» и «плохих» темпераментов: у каждого типа есть сильные стороны и риски.</p></div>'
+   +'<div>'+quad("","")+'</div></div>'
+   +'<div class="call blue"><b>Связка с заданием 3:</b><span>экстраверсия × нейротизм = тип темперамента. Ваш результат теста Айзенка попадёт в один из квадрантов.</span></div></div>' },
+
+ { t:"Характер: понятие", note:"<b>Определение (3 мин).</b> Характер — система устойчивых свойств личности, проявляющихся в типичных способах отношения к людям, деятельности, себе и обстоятельствам. От греч. charakter — отпечаток, признак. Три ключевых слова: устойчивые, типичные, значимые поступки. <b>Вопрос:</b> одна вспышка раздражения — это уже черта характера?",
+   h:'<div class="sb"><div class="card dark"><p class="big" style="margin:0">Характер — система устойчивых свойств личности, проявляющихся в типичных способах отношения к людям, деятельности, себе и обстоятельствам.</p></div>'
+   +'<div class="g3"><div class="card"><h3>Устойчивые</h3><p>повторяются в разное время и в разных ситуациях</p></div><div class="card"><h3>Типичные</h3><p>это привычный способ действовать, а не случайная реакция</p></div><div class="card"><h3>Значимые поступки</h3><p>характер виден в решениях и отношениях</p></div></div>'
+   +'<p class="muted" style="margin:0;text-align:center">От греч. <i>charakter</i> — отпечаток, признак</p></div>' },
+
+ { t:"Четыре сферы отношений", note:"<b>Ключевой слайд (5 мин).</b> Нажимайте на карточки, чтобы раскрыть примеры черт. Именно по этим четырём сферам студенты будут описывать характер в задании 2. Обратите внимание: у каждой сферы есть полюса, и оценка зависит от ситуации. <b>Вопрос:</b> какая сфера, по-вашему, раскрывает человека лучше всего?",
+   h:'<div class="sb"><p class="muted" style="margin:0;text-align:center">Нажмите на карточку, чтобы увидеть примеры черт</p><div class="g2" id="spheres"></div></div>' },
+
+ { t:"Волевые черты и контекст", note:"<b>Контекст решает (4 мин).</b> Волевые черты — способы сознательной регуляции поведения при препятствиях. Нажимайте на строки справа: одна и та же черта в разных условиях может быть ресурсом или риском. <b>Вопрос:</b> приведите пример, когда упрямство оказалось полезным.",
+   h:'<div class="sb"><div class="g2" style="align-items:start"><div class="card"><h3>Волевые черты</h3><p class="muted">способы сознательной регуляции поведения при препятствиях</p><div class="chips"><span class="chip">целеустремлённость</span><span class="chip">решительность</span><span class="chip">выдержка</span><span class="chip">настойчивость</span><span class="chip">самостоятельность</span><span class="chip">дисциплинированность</span></div></div>'
+   +'<div class="card plain"><h3>Контекст решает</h3><p class="muted">нажмите на строку</p><div id="flips" style="display:grid;gap:.45rem"></div></div></div></div>' },
+
+ { t:"Как формируется характер", note:"<b>Формирование (3 мин).</b> Биология создаёт фон (темперамент), а содержание характера складывается в жизни, общении и деятельности. Поведение закрепляется, когда оно регулярно значимо и подкреплено последствиями. <b>Вопрос:</b> какие привычки вы закрепили за последний год?",
+   h:'<div class="sb"><div class="flow"><div class="card"><h3>Действие</h3><p>человек поступает в конкретной ситуации</p></div><div class="ar">→</div><div class="card"><h3>Последствия</h3><p>оценка окружающих, результат, опыт</p></div><div class="ar">→</div><div class="card"><h3>Повторение</h3><p>способ действия закрепляется</p></div><div class="ar">→</div><div class="card dark"><h3>Черта</h3><p>устойчивое свойство характера</p></div></div>'
+   +'<div class="g2"><div class="card"><h3>Что влияет</h3><div class="chips"><span class="chip">семья</span><span class="chip">школа и вуз</span><span class="chip">группа</span><span class="chip">профессия</span><span class="chip">образцы взрослых</span><span class="chip">рефлексия</span></div></div>'
+   +'<div class="call green" style="align-self:stretch"><b>Вывод.</b><span>характер не врождённый: он меняется работой над собой.</span></div></div></div>' },
+
+ { t:"Акцентуация и ярлыки", note:"<b>Осторожно с ярлыками (3 мин).</b> Акцентуация — крайний вариант нормы, а не расстройство. Педагог описывает поведение и условия, не ставит диагнозов. Это правило пригодится в задании 2: опишите поведение, а не навешивайте ярлык. <b>Вопрос:</b> чем «он грубый» отличается от «он перебивает собеседников на обсуждении»?",
+   h:'<div class="sb"><div class="g2"><div class="card"><h3>Акцентуация</h3><ul style="margin:.2rem 0 0;padding-left:1.2rem"><li>чрезмерная выраженность отдельных черт</li><li>крайний вариант нормы</li><li>не равна расстройству</li></ul></div>'
+   +'<div class="card"><h3>Ярлык и описание</h3><div class="flip" style="cursor:default"><span><b>Ярлык:</b> «ленивый»</span></div><p style="margin:.4rem 0 .2rem"><b>Описание:</b> «сдаёт работы после срока, когда задание не разбито на этапы»</p></div></div>'
+   +'<div class="call amber"><b>Правило.</b><span>описываем наблюдаемое поведение и условия, а не «типы людей».</span></div></div>' },
+
+ { t:"Темперамент и характер", note:"<b>Сопоставление (3 мин).</b> Содержание одно, динамика разная. Настойчивость у активного человека выглядит как энергичное продвижение, у медлительного — как спокойная последовательность.",
+   h:'<div class="sb"><table class="tb2"><thead><tr><th></th><th>Темперамент</th><th>Характер</th></tr></thead><tbody>'
+   +'<tr><td>Что описывает</td><td>динамику: темп, интенсивность, реактивность</td><td>отношения и способы действия</td></tr>'
+   +'<tr><td>Основа</td><td>биологические и нейрофизиологические предпосылки</td><td>социальные условия, опыт, воспитание</td></tr>'
+   +'<tr><td>Оценка</td><td>«хорошо / плохо» невозможна</td><td>оцениваются отдельные черты в контексте</td></tr></tbody></table>'
+   +'<div class="call blue"><b>Связь.</b><span>темперамент — динамический фон, на котором формируется характер.</span></div></div>' },
+
+ { t:"Способности: понятие", note:"<b>Определение (3 мин).</b> Способности — индивидуальные особенности, являющиеся условием успешного выполнения деятельности. Они не сводятся к знаниям и навыкам, но объясняют лёгкость и скорость их приобретения. <b>Вопрос:</b> могут ли два студента с одинаковыми знаниями иметь разные способности?",
+   h:'<div class="sb"><div class="card dark"><p class="big" style="margin:0">Способности — индивидуальные особенности, являющиеся условием успешного выполнения учебной и профессиональной деятельности.</p></div>'
+   +'<div class="g3"><div class="card"><h3>Различают людей</h3><p>у каждого свой профиль сильных сторон</p></div><div class="card"><h3>Связаны с успехом</h3><p>влияют на результат деятельности</p></div><div class="card"><h3>Не равны знаниям</h3><p>объясняют лёгкость освоения знаний и навыков</p></div></div></div>' },
+
+ { t:"Задатки и развитие", note:"<b>Задатки (3 мин).</b> Задатки — анатомо-физиологические предпосылки; они не гарантируют способность. Ведущая роль принадлежит деятельности, обучению и среде. <b>Вопрос:</b> бывают ли способности без задатков и задатки без способностей?",
+   h:'<div class="sb"><div class="flow"><div class="card"><h3>Задатки</h3><p>особенности мозга и нервной системы</p></div><div class="ar">→</div><div class="card"><h3>Деятельность и среда</h3><p>обучение, практика, поддержка</p></div><div class="ar">→</div><div class="card dark"><h3>Способности</h3><p>возможность успешно осваивать деятельность</p></div></div>'
+   +'<div class="call blue"><b>Главное.</b><span>одни и те же задатки дают разные способности в разной деятельности.</span></div></div>' },
+
+ { t:"Виды способностей", note:"<b>Классификации (3 мин).</b> Приведите по примеру из профессии студентов. Специальные способности: математические, технические, музыкальные, литературные, изобразительные.",
+   h:'<div class="sb"><div class="g3"><div class="card"><h3>По широте</h3><p><b>Общие</b> — интеллектуальные, нужны во многих видах деятельности.</p><p><b>Специальные</b> — музыкальные, математические, технические.</p></div>'
+   +'<div class="card"><h3>По деятельности</h3><p><b>Учебные</b> — освоение знаний.</p><p><b>Профессиональные</b> — педагогические, инженерные.</p><p><b>Творческие</b> — создание нового.</p></div>'
+   +'<div class="card"><h3>По результату</h3><p><b>Репродуктивные</b> — по образцу.</p><p><b>Творческие</b> — оригинальный продукт.</p></div></div>'
+   +'<div class="call blue"><b>Пример.</b><span>программист: общие (логика) + специальные (алгоритмическое мышление) + творческие (нестандартные решения).</span></div></div>' },
+
+ { t:"Ступени способностей", note:"<b>Ступени (2 мин).</b> Одарённость → талант → гениальность. Высокие способности не отменяют труда и поддерживающей среды. Ранний ярлык «одарённый» вреден.",
+   h:'<div class="sb"><div class="bars"><div class="bar" style="background:#6F86C9;height:55%"><h3>Одарённость</h3><p style="margin:0">сочетание способностей, дающее успех</p></div><div class="bar" style="background:#3F58A6;height:78%"><h3>Талант</h3><p style="margin:0">высокое развитие, значимые результаты</p></div><div class="bar" style="background:#4E9A7B;height:100%"><h3>Гениальность</h3><p style="margin:0">наивысшая ступень творческих сил</p></div></div>'
+   +'<div class="call amber"><b>Важно.</b><span>высокие способности не отменяют труда и поддерживающей среды.</span></div></div>' },
+
+ { t:"Способность — не отметка", note:"<b>Принцип (4 мин).</b> Низкая отметка может быть связана с мотивацией, условиями, пробелами, тревогой. Зона ближайшего развития (Л. С. Выготский): задача чуть сложнее текущего уровня при поддержке педагога. <b>Вопрос:</b> как проверить потенциал, не опираясь на отметку?",
+   h:'<div class="sb"><div class="g2"><div class="card"><h3>Низкий результат — почему?</h3><ul style="margin:.2rem 0 0;padding-left:1.2rem"><li>мотивация и тревога</li><li>пробелы в знаниях</li><li>мало практики</li><li>неудачная форма проверки</li></ul></div>'
+   +'<div class="card"><h3>Зона ближайшего развития</h3><p>Развивает задача <b>чуть сложнее</b> текущего уровня, выполненная при поддержке педагога.</p><p class="muted">Лёгкое не развивает, непосильное отбивает желание.</p></div></div>'
+   +'<div class="call green"><b>Принцип.</b><span>не делите обучающихся на «способных» и «неспособных».</span></div></div>' },
+
+ { t:"Переходим к заданиям", note:"<b>Переход (2 мин).</b> Раздайте ссылку на файл. Студенты вводят ФИО и группу и проходят три задания. Запустите таймер кнопкой «Таймер» сверху. Результаты сохраняются в вашу Google Таблицу.",
+   h:'<div class="sb"><div class="g3"><div class="card"><div class="step"><span class="num">1</span><div><h3>Тест на понятия</h3><p>12 вопросов, 8–10 минут. Ответ проверяется сразу.</p></div></div></div>'
+   +'<div class="card"><div class="step"><span class="num">2</span><div><h3>Описание характера</h3><p>по четырём сферам отношений, 15 минут.</p></div></div></div>'
+   +'<div class="card"><div class="step"><span class="num">3</span><div><h3>Результат Айзенка</h3><p>вводите баллы и аргументируете выбор, 10 минут.</p></div></div></div></div>'
+   +'<div style="text-align:center"><button class="btn org" id="goTasks">Открыть задания</button></div></div>' }
+];
+
+var SPHERES = [
+ { n:"Отношение к трудовой деятельности", pos:["трудолюбие","ответственность","добросовестность","инициативность"], neg:["лень","небрежность","пассивность"], q:"Как человек действует, когда задание рутинное или трудное?" },
+ { n:"Отношение к самому себе", pos:["самоуважение","скромность","самокритичность","чувство долга"], neg:["самоуверенность","тщеславие","заниженная самооценка"], q:"Как человек оценивает себя и свои ошибки?" },
+ { n:"Отношение к обстоятельствам", pos:["оптимизм","стойкость","гибкость","решительность"], neg:["тревожность","пассивность","растерянность"], q:"Как человек ведёт себя при переменах, неудачах, давлении?" },
+ { n:"Отношение к людям", pos:["доброжелательность","тактичность","честность","отзывчивость"], neg:["грубость","замкнутость","эгоизм"], q:"Как человек общается, помогает, решает конфликты?" }
+];
+var FLIPS = [["упорство","упрямство"],["осторожность","трусость"],["бережливость","скупость"],["прямота","бестактность"]];
+
+/* ============================ ЛЕКЦИЯ: ДВИЖОК ============================ */
+var cur = 0, notesOn = false;
+function buildSlides(){
+  var host = $("#lecture");
+  host.innerHTML = SLIDES.map(function(s,i){ return '<article class="slide" id="s'+i+'" aria-label="Слайд '+(i+1)+'"><h2 class="t">'+s.t+'</h2>'+s.h+'</article>'; }).join("");
+  var sp = $("#spheres");
+  sp.innerHTML = SPHERES.map(function(a){
+    return '<button class="sphere" type="button" aria-expanded="false"><h3>'+a.n+'</h3><span class="hint">'+esc(a.q)+'</span><div class="more"><div class="chips">'
+      + a.pos.map(function(x){return '<span class="chip pos">'+x+'</span>';}).join("")
+      + a.neg.map(function(x){return '<span class="chip neg">'+x+'</span>';}).join("")+'</div></div></button>';
+  }).join("");
+  $$(".sphere").forEach(function(b){ b.onclick=function(){ var o=b.classList.toggle("open"); b.setAttribute("aria-expanded",o); }; });
+  $("#flips").innerHTML = FLIPS.map(function(f){ return '<button type="button" class="flip"><span class="a">'+f[0]+'</span><span class="b">'+f[1]+'</span><span class="muted" style="font-size:.8rem">'+f[0]+' / '+f[1]+'</span></button>'; }).join("");
+  $$(".flip").forEach(function(b){ if(b.querySelector(".a")&&b.querySelector(".b")) b.onclick=function(){ b.classList.toggle("on"); }; });
+  var g=$("#goTasks"); if(g) g.onclick=function(){ showTab("tasks"); };
+}
+function go(i){
+  cur = Math.max(0, Math.min(SLIDES.length-1, i));
+  $$(".slide").forEach(function(el,k){ el.classList.toggle("on", k===cur); });
+  $("#bar").style.width = ((cur+1)/SLIDES.length*100)+"%";
+  $("#count").textContent = (cur+1)+" / "+SLIDES.length;
+  $("#prev").disabled = cur===0; $("#next").disabled = cur===SLIDES.length-1;
+  $("#notes").innerHTML = SLIDES[cur].note || "";
+  $("#lecture").scrollTop = 0;
+  try{ history.replaceState(null,"","#"+(cur+1)); }catch(e){}
+}
+function showTab(w){
+  var L = w==="lecture";
+  $("#lecture").style.display = L?"flex":"none";
+  $("#nav").style.display = L?"flex":"none";
+  $("#notes").classList.toggle("on", L&&notesOn);
+  $("#tasks").classList.toggle("on", !L);
+  $("#tabL").setAttribute("aria-selected", L); $("#tabT").setAttribute("aria-selected", !L);
+  if(!L) renderTasks();
+}
+$("#tabL").onclick=function(){ showTab("lecture"); };
+$("#tabT").onclick=function(){ showTab("tasks"); };
+$("#prev").onclick=function(){ go(cur-1); };
+$("#next").onclick=function(){ go(cur+1); };
+$("#btnNotes").onclick=function(){ notesOn=!notesOn; $("#notes").classList.toggle("on", notesOn && $("#tabL").getAttribute("aria-selected")==="true"); };
+$("#btnFs").onclick=function(){ toggleFs(); };
+function toggleFs(){ try{ if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); }catch(e){} }
+
+/* размер текста */
+var scale = 1;
+try{ scale = parseFloat(localStorage.getItem(STORE+"_fs"))||1; }catch(e){}
+function applySize(){
+  var base = Math.max(15, Math.min(window.innerWidth/66, 27));
+  document.documentElement.style.fontSize = (base*scale).toFixed(2)+"px";
+}
+function bump(d){ scale=Math.max(.75,Math.min(1.6,+(scale+d).toFixed(2))); try{localStorage.setItem(STORE+"_fs",scale);}catch(e){} applySize(); }
+$("#fsUp").onclick=function(){ bump(.1); }; $("#fsDown").onclick=function(){ bump(-.1); };
+window.addEventListener("resize", applySize);
+
+/* таймер */
+var tm = { end:0, left:0, run:false, iv:null };
+function fmt(s){ var m=Math.floor(s/60), r=s%60; return (m<10?"0":"")+m+":"+(r<10?"0":"")+r; }
+function tick(){
+  var chip=$("#tmChip");
+  if(tm.run) tm.left=Math.max(0,Math.round((tm.end-Date.now())/1000));
+  chip.textContent = fmt(tm.left)+(tm.run?"":" ‖");
+  chip.classList.toggle("low", tm.left<=60); chip.classList.toggle("paused", !tm.run);
+  if(tm.run && tm.left===0){ tm.run=false; chip.textContent="Время вышло"; clearInterval(tm.iv); }
+}
+function setTimer(m){
+  clearInterval(tm.iv); var chip=$("#tmChip");
+  if(!m){ chip.style.display="none"; tm.run=false; return; }
+  tm.left=m*60; tm.end=Date.now()+tm.left*1000; tm.run=true; chip.style.display="block"; tm.iv=setInterval(tick,500); tick();
+}
+$$("#tmPop [data-m]").forEach(function(b){ b.onclick=function(){ setTimer(+b.dataset.m); $("#tmPop").open=false; }; });
+$("#tmChip").onclick=function(){ if(tm.left<=0){ setTimer(0); return; } if(tm.run){ tm.run=false; } else { tm.run=true; tm.end=Date.now()+tm.left*1000; } tick(); };
+
+/* клавиши */
+document.addEventListener("keydown", function(e){
+  var tag=(e.target.tagName||"").toLowerCase();
+  if(tag==="input"||tag==="textarea"||tag==="select"||e.ctrlKey||e.metaKey||e.altKey) return;
+  var onL = $("#tabL").getAttribute("aria-selected")==="true";
+  if(e.shiftKey && e.key.toLowerCase()==="t"){ toggleTeacher(); return; }
+  if(onL){
+    if(e.key==="ArrowRight"||e.key==="PageDown"||(e.key===" "&&tag!=="button")){ e.preventDefault(); go(cur+1); }
+    else if(e.key==="ArrowLeft"||e.key==="PageUp"){ e.preventDefault(); go(cur-1); }
+    else if(e.key==="Home"){ go(0); } else if(e.key==="End"){ go(SLIDES.length-1); }
+  }
+  if(e.key==="f"||e.key==="F"){ toggleFs(); }
+  if(e.key==="n"||e.key==="N"){ $("#btnNotes").click(); }
+});
+
+/* ============================ ОТПРАВКА В ТАБЛИЦУ ============================ */
+function hash(str){ var h=5381; for(var i=0;i<str.length;i++){ h=((h<<5)+h+str.charCodeAt(i))|0; } return (h>>>0).toString(36); }
+function sid(){ return hash((S.fio.trim().toLowerCase()+"|"+S.group.trim().toLowerCase())); }
+function badge(stage, state, text){ $$('[data-st="'+stage+'"]').forEach(function(el){ el.className="status "+state; el.textContent=text; }); }
+function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+async function confirmRow(stage, id){
+  for(var i=0;i<4;i++){
+    await sleep(i===0?1200:1800);
+    try{
+      var r = await fetch(SCRIPT_URL+"?action=check&stage="+stage+"&id="+encodeURIComponent(id)+"&t="+Date.now());
+      var j = await r.json(); if(j && j.found) return true;
+    }catch(e){}
+  }
+  return false;
+}
+async function send(stage, data){
+  var payload = Object.assign({ stage:stage, id:sid(), fio:S.fio.trim(), group:S.group.trim() }, data);
+  badge(stage,"wait","Отправляю…");
+  try{
+    await fetch(SCRIPT_URL, { method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload) });
+  }catch(e){
+    S.sent[stage]="fail"; save(); badge(stage,"bad","Нет связи. Ответ сохранён на устройстве — нажмите «Отправить заново»"); return false;
+  }
+  badge(stage,"wait","Проверяю, что таблица приняла…");
+  var ok = await confirmRow(stage, payload.id);
+  S.sent[stage] = ok?"ok":"unk"; save();
+  if(ok) badge(stage,"ok","✓ Принято таблицей");
+  else badge(stage,"bad","Не удалось подтвердить приём. Нажмите «Отправить заново» или покажите ответ преподавателю");
+  return ok;
+}
+function restoreBadge(stage){
+  var v=S.sent[stage];
+  if(v==="ok") badge(stage,"ok","✓ Принято таблицей");
+  else if(v) badge(stage,"bad","Приём не подтверждён. Нажмите «Отправить заново»");
+}
+
+/* ============================ ЗАДАНИЯ: ВОПРОСЫ ТЕСТА ============================ */
+var Q = [
+ { c:"Темперамент", q:"Что описывает темперамент?", o:{A:"динамику поведения: темп, интенсивность, реактивность",B:"систему отношений к людям и делу",C:"уровень знаний и умений",D:"нравственные качества"}, ok:"A", e:"Темперамент — динамическая сторона поведения. Отношения к людям и делу описывает характер." },
+ { c:"Темперамент", q:"По Айзенку сочетание экстраверсии и высокого нейротизма соответствует…", o:{A:"холерику",B:"сангвинику",C:"флегматику",D:"меланхолику"}, ok:"A", e:"Экстраверт с высоким нейротизмом — холерик. Экстраверт с низким — сангвиник; интроверт с низким — флегматик; интроверт с высоким — меланхолик." },
+ { c:"Характер", q:"Характер — это…", o:{A:"врождённая скорость реакций",B:"система устойчивых свойств личности, проявляющихся в отношении к людям, деятельности, себе и обстоятельствам",C:"сумма знаний",D:"уровень интеллекта"}, ok:"B", e:"Характер — устойчивые способы отношения и действия. Скорость реакций — это уже темперамент." },
+ { c:"Характер", q:"К отношению к трудовой деятельности относится черта…", o:{A:"трудолюбие",B:"тактичность",C:"самокритичность",D:"оптимизм"}, ok:"A", e:"Трудолюбие — отношение к труду. Тактичность — к людям, самокритичность — к себе, оптимизм — к обстоятельствам." },
+ { c:"Характер", q:"Самокритичность проявляется в отношении…", o:{A:"к самому себе",B:"к людям",C:"к трудовой деятельности",D:"к обстоятельствам"}, ok:"A", e:"Самокритичность — оценка собственных поступков и ошибок, то есть отношение к себе." },
+ { c:"Характер", q:"Что решающе влияет на формирование характера?", o:{A:"группа крови",B:"жизнь, деятельность, общение и воспитание",C:"только наследственность",D:"время рождения"}, ok:"B", e:"Биология задаёт фон, а содержание характера складывается в жизни, общении и деятельности." },
+ { c:"Характер", q:"Акцентуация характера — это…", o:{A:"психическое заболевание",B:"чрезмерная выраженность отдельных черт, крайний вариант нормы",C:"отсутствие характера",D:"тип темперамента"}, ok:"B", e:"Акцентуация не равна расстройству. Это крайний вариант нормы, и ярлыки здесь вредны." },
+ { c:"Характер", q:"Упорство и упрямство показывают, что оценка черты…", o:{A:"не зависит от ситуации",B:"зависит от контекста",C:"определяется темпераментом",D:"одинакова для всех"}, ok:"B", e:"Одна и та же черта бывает ресурсом или риском в зависимости от условий." },
+ { c:"Способности", q:"Задатки — это…", o:{A:"готовые способности",B:"анатомо-физиологические предпосылки способностей",C:"знания и навыки",D:"особенности характера"}, ok:"B", e:"Задатки — предпосылки. Способности развиваются в деятельности и обучении." },
+ { c:"Способности", q:"Низкая отметка по предмету означает, что…", o:{A:"способностей нет",B:"причиной могут быть мотивация, пробелы, тревога — вывод о способностях делать нельзя",C:"у студента ригидный темперамент",D:"студент не одарён"}, ok:"B", e:"Способность не равна отметке. Нужно выяснить условия, мотивацию и пробелы." },
+ { c:"Способности", q:"Как называется уровень способностей, при котором создаётся новый оригинальный продукт?", o:{A:"репродуктивный",B:"творческий",C:"элементарный",D:"общий"}, ok:"B", e:"Репродуктивный уровень — освоение по образцу; творческий — создание нового." },
+ { c:"Способности", q:"Правильный порядок ступеней высоких способностей:", o:{A:"талант → одарённость → гениальность",B:"одарённость → талант → гениальность",C:"гениальность → талант → одарённость",D:"одарённость → гениальность → талант"}, ok:"B", e:"Одарённость, затем талант, затем гениальность как наивысшая ступень творческих сил." }
+];
+
+/* ============================ ЗАДАНИЯ: ОТРИСОВКА ============================ */
+var STEPS = ["Вход","Тест","Характер","Айзенк","Итоги"];
+function setStep(n){ S.step=n; save(); renderTasks(); $("#tstage").scrollTop=0; }
+function renderTasks(){
+  var st=$("#steps");
+  st.innerHTML = STEPS.map(function(n,i){
+    var done = (i===0&&S.fio&&S.group)||(i===1&&S.test.done)||(i===2&&S.sent.character)||(i===3&&S.sent.eysenck);
+    return '<button class="st'+(done?" done":"")+'" '+(i===S.step?'aria-current="step"':"")+' data-i="'+i+'">'+(i+1)+'. '+n+'</button>';
+  }).join("");
+  $$(".st",st).forEach(function(b){ b.onclick=function(){ var i=+b.dataset.i; if(i>0 && !(S.fio.trim()&&S.group.trim())) return; setStep(i); }; });
+  $$(".pane").forEach(function(p,i){ p.classList.toggle("on", i===S.step); });
+  [pLogin,pTest,pChar,pEys,pEnd][S.step]();
+}
+
+/* --- 0. вход --- */
+function pLogin(){
+  var p=$("#p0");
+  p.innerHTML='<h2>Задания по теме</h2><p class="sub">Три задания займут около 35 минут. Ответы сохраняются на вашем устройстве и уходят в таблицу преподавателя.</p>'
+   +'<label class="f" for="fio">Фамилия, имя</label><input class="in" id="fio" autocomplete="name" value="'+esc(S.fio)+'" placeholder="Например, Каримова Дилноза">'
+   +'<label class="f" for="grp">Группа</label><input class="in" id="grp" autocomplete="off" value="'+esc(S.group)+'" placeholder="Например, 412-21">'
+   +'<p class="hint" style="margin-top:.6rem">Пишите так же при каждом входе: по фамилии и группе таблица находит ваши ответы и обновляет их при повторной отправке.</p>'
+   +'<div class="err" id="e0"></div><div class="acts"><button class="btn" id="b0">Начать тест</button></div>';
+  $("#b0").onclick=function(){
+    var f=$("#fio").value.trim(), g=$("#grp").value.trim();
+    if(f.length<3||f.indexOf(" ")<0){ $("#e0").textContent="Введите фамилию и имя через пробел."; return; }
+    if(!g){ $("#e0").textContent="Укажите группу."; return; }
+    S.fio=f; S.group=g; save(); setStep(1);
+  };
+}
+
+/* --- 1. тест --- */
+function qOrder(i){
+  if(!S.test.opt[i]) S.test.opt[i]=shuffle(Object.keys(Q[i].o));
+  return S.test.opt[i];
+}
+function pTest(){
+  var p=$("#p1"), t=S.test;
+  if(t.done) return testResult();
+  if(!t.t0) t.t0=Date.now();
+  var i=t.i, q=Q[i], answered=t.ans[i];
+  var letters=["A","B","C","D"];
+  var html='<div class="qhead"><span class="hint">'+(i+1)+' из '+Q.length+' · '+q.c+'</span><div class="qprog"><i style="width:'+((i+(answered?1:0))/Q.length*100)+'%"></i></div></div>'
+    +'<div class="qtext">'+esc(q.q)+'</div>';
+  qOrder(i).forEach(function(k,n){
+    var cls="", dis="";
+    if(answered){ dis=" disabled"; if(k===q.ok) cls=" ok"; else if(k===answered.key) cls=" bad"; }
+    html+='<button class="opt'+cls+'" data-k="'+k+'"'+dis+'><span class="k">'+letters[n]+'</span><span>'+esc(q.o[k])+'</span></button>';
+  });
+  if(answered){
+    html+='<div class="call '+(answered.ok?"green":"amber")+' expl"><b>'+(answered.ok?"Верно.":"Не совсем.")+'</b><span>'+esc(q.e)+'</span></div>'
+      +'<div class="acts"><button class="btn" id="qn">'+(i===Q.length-1?"Показать результат":"Дальше")+'</button></div>';
+  }
+  p.innerHTML=html;
+  $$(".opt",p).forEach(function(b){ b.onclick=function(){
+    var k=b.dataset.k; t.ans[i]={key:k, ok:k===q.ok}; save(); pTest();
+  }; });
+  var qn=$("#qn"); if(qn) qn.onclick=function(){
+    if(i===Q.length-1){ finishTest(); } else { t.i=i+1; save(); pTest(); $("#tstage").scrollTop=0; }
+  };
+}
+function finishTest(){
+  var t=S.test; t.score=Object.keys(t.ans).filter(function(k){return t.ans[k].ok;}).length;
+  t.sec=Math.round((Date.now()-t.t0)/1000); t.done=true; save(); renderTasks();
+  sendTest();
+}
+function sendTest(){
+  var t=S.test, letters=["A","B","C","D"];
+  var answers=Q.map(function(q,i){ var a=t.ans[i]; if(!a) return ""; var n=qOrder(i).indexOf(a.key); return a.key+(a.ok?" ✔":" ✘"); });
+  return send("test",{ score:t.score, max:Q.length, seconds:t.sec, answers:answers });
+}
+function testResult(){
+  var p=$("#p1"), t=S.test, pct=Math.round(t.score/Q.length*100);
+  var wrong=Q.map(function(q,i){return {q:q,i:i};}).filter(function(x){return !t.ans[x.i]||!t.ans[x.i].ok;});
+  p.innerHTML='<h2>Результат теста</h2><div class="score"><div class="ring" style="--p:'+pct+'"><span>'+t.score+'/'+Q.length+'</span></div>'
+   +'<div><div class="big2">'+pct+'%</div><div class="muted">'+(pct>=80?"Понятия усвоены хорошо":pct>=60?"Основа есть, повторите отмеченные вопросы":"Вернитесь к слайдам и разберите ошибки")+'</div><div style="margin-top:.5rem"><span class="status" data-st="test"></span></div></div></div>'
+   +(wrong.length?'<div class="card plain"><h3>Над чем стоит подумать</h3>'+wrong.map(function(x){ return '<div class="rev"><i>'+(x.i+1)+'</i><div><b>'+esc(x.q.q)+'</b><br><span class="muted">Верно: '+esc(x.q.o[x.q.ok])+'.</span> '+esc(x.q.e)+'</div></div>'; }).join("")+'</div>':'<div class="call green"><b>Без ошибок.</b><span>все двенадцать понятий усвоены.</span></div>')
+   +'<div class="acts"><button class="btn alt" id="rs">Отправить заново</button><button class="btn" id="tn">Задание 2: описать характер</button></div>';
+  restoreBadge("test");
+  $("#rs").onclick=sendTest; $("#tn").onclick=function(){ setStep(2); };
+}
+
+/* --- 2. характер --- */
+var SPH = [
+ { k:"work", n:"Отношение к трудовой деятельности", h:"Как человек учится или работает: берётся за задания, доводит ли до конца, как относится к рутине и срокам.", chips:["трудолюбие","ответственность","инициативность","аккуратность","добросовестность","лень"] },
+ { k:"self", n:"Отношение к самому себе", h:"Как человек оценивает себя: самоуважение, скромность, реакция на собственные ошибки, уверенность.", chips:["самоуважение","самокритичность","скромность","уверенность","самоуверенность","тревожность"] },
+ { k:"circ", n:"Отношение к обстоятельствам", h:"Как человек ведёт себя в переменах, неудачах, давлении, в непривычной ситуации.", chips:["оптимизм","стойкость","гибкость","решительность","растерянность","пассивность"] },
+ { k:"people", n:"Отношение к людям", h:"Как человек общается, помогает, решает конфликты, относится к чужому мнению.", chips:["доброжелательность","тактичность","честность","отзывчивость","замкнутость","грубость"] }
+];
+var LABELS=["ленив","слаб","трудн","глуп","туп","плох"];
+function pChar(){
+  var p=$("#p2"), c=S.ch;
+  var h='<h2>Задание 2. Опишите характер</h2><p class="sub">Разложите характер человека по четырём сферам отношений. Пишите о поведении, а не о ярлыках.</p>'
+   +'<div class="row2"><div><label class="f" for="who">Кого описываете</label><select class="in" id="who"><option>Я сам(а)</option><option>Литературный герой или персонаж фильма</option><option>Знакомый человек (без имени)</option></select></div>'
+   +'<div><label class="f" for="cname">Имя героя или пояснение</label><input class="in" id="cname" value="'+esc(c.name)+'" placeholder="Например, Раскольников"></div></div>'
+   +'<details class="ex"><summary>Посмотреть пример заполнения</summary>'
+   +'<p><b>Труд.</b> Ответственный: сдаёт проекты заранее и проверяет себя дважды. Рутину откладывает, пока не появляется срок.</p>'
+   +'<p><b>К себе.</b> Самокритичный: после неудачи разбирает ошибки, но слишком строг к себе и редко отмечает свои успехи.</p>'
+   +'<p><b>К обстоятельствам.</b> Гибкий: быстро перестраивается, когда меняют расписание. Под давлением говорит быстро и теряет детали.</p>'
+   +'<p><b>К людям.</b> Доброжелательный: помогает однокурсникам, спокойно выслушивает. В споре о принципах уступает, чтобы избежать конфликта.</p></details>';
+  SPH.forEach(function(s){
+    h+='<div class="sph"><h3>'+s.n+'</h3><div class="hint">'+s.h+'</div><div class="chips">'
+     + s.chips.map(function(w){ return '<button type="button" class="chip" data-f="'+s.k+'" data-w="'+w+'">'+w+'</button>'; }).join("")
+     +'</div><textarea class="ta" id="t_'+s.k+'" placeholder="Назовите черту и подтвердите примером из поведения. Нажмите на слово выше, чтобы вставить его."></textarea><div class="cnt" id="c_'+s.k+'"></div><div class="hint" id="w_'+s.k+'"></div></div>';
+  });
+  h+='<div class="row2"><div><label class="f" for="lead">Ведущая черта (одна)</label><input class="in" id="lead" value="'+esc(c.lead)+'"></div>'
+   +'<div><label class="f" for="ctx">Где она ресурс, а где риск</label><input class="in" id="ctx" value="'+esc(c.ctx)+'" placeholder="Ресурс: …; риск: …"></div></div>'
+   +'<div class="err" id="e2"></div><div style="text-align:center"><span class="status" data-st="character"></span></div>'
+   +'<div class="acts"><button class="btn" id="sc">Отправить описание</button></div>';
+  p.innerHTML=h;
+  $("#who").value=c.who;
+  SPH.forEach(function(s){ var ta=$("#t_"+s.k); ta.value=c[s.k]||""; upd(s.k); ta.oninput=function(){ c[s.k]=ta.value; save(); upd(s.k); }; });
+  $("#who").onchange=function(){ c.who=this.value; save(); };
+  $("#cname").oninput=function(){ c.name=this.value; save(); };
+  $("#lead").oninput=function(){ c.lead=this.value; save(); };
+  $("#ctx").oninput=function(){ c.ctx=this.value; save(); };
+  $$(".chip[data-f]",p).forEach(function(b){ b.onclick=function(){
+    var ta=$("#t_"+b.dataset.f); ta.value=(ta.value&&!/\n$/.test(ta.value)?ta.value+"\n":ta.value)+b.dataset.w+": "; ta.focus(); c[b.dataset.f]=ta.value; save(); upd(b.dataset.f);
+  }; });
+  restoreBadge("character");
+  $("#sc").onclick=sendChar;
+}
+function upd(k){
+  var v=$("#t_"+k).value, n=v.trim().length, el=$("#c_"+k);
+  el.textContent=n+" / 80 знаков минимум"; el.className="cnt"+(n>=80?" ok":"");
+  var low=v.toLowerCase(), hit=LABELS.filter(function(l){return low.indexOf(l)>=0;});
+  $("#w_"+k).textContent = hit.length?"Проверьте формулировку: вместо оценки опишите, что человек делает и в каких условиях.":"";
+}
+async function sendChar(){
+  var c=S.ch, e=$("#e2"); e.textContent="";
+  var short=SPH.filter(function(s){ return (c[s.k]||"").trim().length<80; });
+  if(short.length){ e.textContent="Допишите описание: «"+short[0].n+"» (нужно хотя бы 80 знаков). Осталось разделов: "+short.length+"."; $("#t_"+short[0].k).focus(); return; }
+  if(c.lead.trim().length<3){ e.textContent="Назовите ведущую черту."; $("#lead").focus(); return; }
+  var ok=await send("character",{ who:c.who, name:c.name, spheres:{work:c.work,self:c.self,circ:c.circ,people:c.people}, lead:c.lead, ctx:c.ctx });
+  renderTasksSteps();
+}
+function renderTasksSteps(){ var cur=S.step; var st=$("#steps"); $$(".st",st).forEach(function(b,i){ var done=(i===0&&S.fio&&S.group)||(i===1&&S.test.done)||(i===2&&S.sent.character)||(i===3&&S.sent.eysenck); b.classList.toggle("done",!!done); }); }
+
+/* --- 3. Айзенк --- */
+var PROPS=["сензитивность","реактивность","активность","темп реакций","пластичность","ригидность","экстраверсия","интроверсия"];
+function eyType(E,N){
+  var ex=E>=12, ne=N>=12;
+  return { type: ex?(ne?"холерик":"сангвиник"):(ne?"меланхолик":"флегматик"), border: Math.abs(E-12)<=2||Math.abs(N-12)<=2 };
+}
+var TYPE_TXT={
+ "холерик":"высокая активность и интенсивные реакции; сильные стороны — энергия, решительность; риски — вспыльчивость, переутомление.",
+ "сангвиник":"подвижность, общительность, быстрая адаптация; риски — поверхностность при монотонной работе.",
+ "флегматик":"спокойствие, устойчивость, медленный темп; риски — медленная адаптация к переменам.",
+ "меланхолик":"чувствительность, глубокие переживания; сильные стороны — эмпатия, тонкость восприятия; риски — тревожность."
+};
+function pEys(){
+  var p=$("#p3"), y=S.ey;
+  p.innerHTML='<h2>Задание 3. Результат теста Айзенка</h2><p class="sub">Пройдите тест, введите баллы и аргументируйте, согласны ли вы с результатом.</p>'
+   +'<div class="call blue"><b>Шаг 1.</b><span>Пройдите опросник EPI на <a href="'+EYSENCK_URL+'" target="_blank" rel="noopener">psytests.org</a>. Откройте ссылку в новой вкладке и вернитесь сюда с цифрами.</span></div>'
+   +'<div class="row2" style="grid-template-columns:repeat(3,1fr)"><div><label class="f" for="eE">Экстраверсия (0–24)</label><input class="in" id="eE" type="number" inputmode="numeric" min="0" max="24" value="'+esc(y.E)+'"></div>'
+   +'<div><label class="f" for="eN">Нейротизм (0–24)</label><input class="in" id="eN" type="number" inputmode="numeric" min="0" max="24" value="'+esc(y.N)+'"></div>'
+   +'<div><label class="f" for="eL">Шкала лжи (0–9)</label><input class="in" id="eL" type="number" inputmode="numeric" min="0" max="9" value="'+esc(y.L)+'"></div></div>'
+   +'<div class="res" style="margin-top:.8rem"><div style="flex:0 0 17rem;max-width:100%" id="qd"></div><div class="resbox" id="eres"></div></div>'
+   +'<label class="f">Согласны ли вы с результатом?</label><div class="chips" id="agree">'+["Да","Частично","Нет"].map(function(a){ return '<button type="button" class="chip'+(y.agree===a?" sel":"")+'" data-a="'+a+'">'+a+'</button>'; }).join("")+'</div>'
+   +'<label class="f">Какие свойства темперамента это подтверждают? (можно несколько)</label><div class="chips" id="props">'+PROPS.map(function(a){ return '<button type="button" class="chip'+(y.props.indexOf(a)>=0?" sel":"")+'" data-p="'+a+'">'+a+'</button>'; }).join("")+'</div>'
+   +'<label class="f" for="arg">Аргументируйте свой выбор</label><div class="hint">Напишите 3–5 предложений. Приведите два-три примера из своего поведения: учёба, общение, стресс. Если не согласны с результатом, объясните, чем он не отражает вас.</div>'
+   +'<div class="chips" style="margin:.4rem 0" id="starters">'+["Например, когда я…","Это связано с тем, что…","Поэтому я считаю…","С результатом не согласен(на), потому что…"].map(function(s){ return '<button type="button" class="chip" data-s="'+s+'">'+s+'</button>'; }).join("")+'</div>'
+   +'<textarea class="ta" id="arg" style="min-height:9rem"></textarea><div class="cnt" id="ca"></div>'
+   +'<div class="err" id="e3"></div><div style="text-align:center"><span class="status" data-st="eysenck"></span></div>'
+   +'<div class="acts"><button class="btn" id="se">Отправить результат</button></div>';
+  $("#arg").value=y.arg||"";
+  function draw(){
+    var E=y.E===""?"":+y.E, N=y.N===""?"":+y.N, L=y.L===""?"":+y.L;
+    $("#qd").innerHTML=quad(E,N);
+    var ok=E!==""&&N!==""&&E>=0&&E<=24&&N>=0&&N<=24, h="";
+    if(ok){ var r=eyType(E,N); h='<div class="big2">'+r.type+'</div><p style="margin:.3rem 0">'+TYPE_TXT[r.type]+'</p>'
+        +(r.border?'<p class="hint">Один из показателей близок к 12: тип выражен слабо, обсудите это в аргументации.</p>':"");
+      if(L!==""&&L>4) h+='<div class="call amber" style="margin-top:.4rem"><b>Шкала лжи выше 4.</b><span>ответы могли быть приукрашены, учтите это в выводе.</span></div>'; }
+    else h='<p class="muted">Введите баллы по экстраверсии и нейротизму: ваша точка появится на схеме.</p>';
+    $("#eres").innerHTML=h;
+    var n=y.arg.trim().length, c=$("#ca"); c.textContent=n+" / 150 знаков минимум"; c.className="cnt"+(n>=150?" ok":"");
+  }
+  draw();
+  [["eE","E"],["eN","N"],["eL","L"]].forEach(function(a){ $("#"+a[0]).oninput=function(){ y[a[1]]=this.value; save(); draw(); }; });
+  $$("#agree .chip").forEach(function(b){ b.onclick=function(){ y.agree=b.dataset.a; save(); $$("#agree .chip").forEach(function(x){ x.classList.toggle("sel",x===b); }); }; });
+  $$("#props .chip").forEach(function(b){ b.onclick=function(){ var a=b.dataset.p, i=y.props.indexOf(a); if(i>=0) y.props.splice(i,1); else y.props.push(a); b.classList.toggle("sel",i<0); save(); }; });
+  $$("#starters .chip").forEach(function(b){ b.onclick=function(){ var ta=$("#arg"); ta.value=(ta.value&&!/\s$/.test(ta.value)?ta.value+" ":ta.value)+b.dataset.s+" "; y.arg=ta.value; save(); draw(); ta.focus(); }; });
+  $("#arg").oninput=function(){ y.arg=this.value; save(); draw(); };
+  restoreBadge("eysenck");
+  $("#se").onclick=sendEys;
+}
+async function sendEys(){
+  var y=S.ey, e=$("#e3"); e.textContent="";
+  var E=+y.E, N=+y.N, L=+y.L;
+  if(y.E===""||isNaN(E)||E<0||E>24){ e.textContent="Экстраверсия: введите число от 0 до 24."; $("#eE").focus(); return; }
+  if(y.N===""||isNaN(N)||N<0||N>24){ e.textContent="Нейротизм: введите число от 0 до 24."; $("#eN").focus(); return; }
+  if(y.L===""||isNaN(L)||L<0||L>9){ e.textContent="Шкала лжи: введите число от 0 до 9."; $("#eL").focus(); return; }
+  if(!y.agree){ e.textContent="Выберите, согласны ли вы с результатом."; return; }
+  if(y.arg.trim().length<150){ e.textContent="Дополните аргументацию: нужно хотя бы 150 знаков."; $("#arg").focus(); return; }
+  await send("eysenck",{ E:E, N:N, L:L, agree:y.agree, props:y.props, arg:y.arg });
+  renderTasksSteps();
+}
+
+/* --- 4. итоги --- */
+function pEnd(){
+  var p=$("#p4"), t=S.test, y=S.ey, c=S.ch;
+  var done=function(k){ return S.sent[k]==="ok"; };
+  var row=function(label,st,extra){ return '<div class="card plain" style="margin:.6rem 0"><div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center"><div><b>'+label+'</b><div class="muted">'+extra+'</div></div><span class="status '+(S.sent[st]==="ok"?"ok":S.sent[st]?"bad":"")+'">'+(S.sent[st]==="ok"?"✓ Принято таблицей":S.sent[st]?"Приём не подтверждён":"Не отправлено")+'</span></div></div>'; };
+  var r=(y.E!==""&&y.N!=="")?eyType(+y.E,+y.N).type:"";
+  p.innerHTML='<h2>Итоги</h2><p class="sub">'+esc(S.fio)+', группа '+esc(S.group)+'</p>'
+   +row("Тест на понятия","test", t.done?(t.score+" из "+Q.length+" ("+Math.round(t.score/Q.length*100)+"%)"):"не пройден")
+   +row("Описание характера","character", S.sent.character?("ведущая черта: "+esc(c.lead)):"не отправлено")
+   +row("Результат Айзенка","eysenck", r?("тип: "+r+", согласие: "+esc(y.agree||"—")):"не отправлено")
+   +'<div class="call blue" style="margin-top:.8rem"><b>Если статус красный,</b><span>откройте нужное задание и нажмите «Отправить заново». Ответы хранятся на этом устройстве.</span></div>'
+   +'<div class="acts"><button class="btn alt" id="dl">Скачать мой отчёт (.txt)</button><button class="btn alt" id="rst">Начать заново</button></div>';
+  $("#dl").onclick=downloadReport;
+  $("#rst").onclick=function(){ if(confirm("Удалить ответы на этом устройстве и начать заново?")){ try{localStorage.removeItem(STORE);}catch(e){} location.reload(); } };
+}
+function downloadReport(){
+  var t=S.test, y=S.ey, c=S.ch, L=[];
+  L.push("Характер и способности — мой отчёт","", "Студент: "+S.fio, "Группа: "+S.group, "");
+  L.push("1. Тест: "+(t.done?t.score+" из "+Q.length:"не пройден"), "");
+  L.push("2. Описание характера ("+c.who+(c.name?", "+c.name:"")+")");
+  SPH.forEach(function(s){ L.push("— "+s.n+":", c[s.k]||"", ""); });
+  L.push("Ведущая черта: "+c.lead, "Ресурс и риск: "+c.ctx, "");
+  L.push("3. Айзенк: E="+y.E+", N="+y.N+", L="+y.L+(y.E!==""&&y.N!==""?" → "+eyType(+y.E,+y.N).type:""), "Согласие: "+y.agree, "Свойства: "+y.props.join(", "), "Аргументация:", y.arg);
+  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([L.join("\n")],{type:"text/plain;charset=utf-8"}));
+  a.download="otchet_"+(S.fio.split(" ")[0]||"student")+".txt"; document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ============================ ПАНЕЛЬ ПРЕПОДАВАТЕЛЯ ============================ */
+var tIv=null;
+async function loadStats(){
+  try{
+    var r=await fetch(SCRIPT_URL+"?action=stats&t="+Date.now()), j=await r.json(), ty=j.eysenck.types||{};
+    $("#tbody").innerHTML='<div class="r"><span>Прошли тест</span><b>'+j.test.n+'</b></div><div class="r"><span>Средний результат</span><b>'+j.test.avg+'%</b></div>'
+     +'<div class="r"><span>Описали характер</span><b>'+j.character.n+'</b></div><div class="r"><span>Сдали Айзенка</span><b>'+j.eysenck.n+'</b></div>'
+     +['холерик','сангвиник','флегматик','меланхолик'].map(function(k){ return '<div class="r"><span>&nbsp;&nbsp;'+k+'</span><b>'+(ty[k]||0)+'</b></div>'; }).join("");
+  }catch(e){ $("#tbody").textContent="Не удалось получить данные. Проверьте, что скрипт развёрнут с доступом «Все»."; }
+}
+function toggleTeacher(){
+  var el=$("#teacher"), on=el.classList.toggle("on");
+  clearInterval(tIv); if(on){ loadStats(); tIv=setInterval(loadStats,15000); }
+}
+
+/* ============================ СТАРТ ============================ */
+load(); applySize(); buildSlides();
+var start=parseInt((location.hash||"").replace("#",""),10);
+go(isNaN(start)?0:start-1);
+var qs=location.search||"";
+showTab(/mode=tasks/.test(qs)?"tasks":"lecture");
+if(/teacher=1/.test(qs)) toggleTeacher();
+</script>
+</body>
+</html>
